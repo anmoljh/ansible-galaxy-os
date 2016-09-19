@@ -1,0 +1,77 @@
+---
+# Install system packages
+
+- name: Update YUM cache
+  yum: name=* update_cache=yes
+
+- name: Add EPEL repo
+  yum: name=epel-release state={{ yum_package_state }}
+
+- name: upgrade/update all packages
+  yum: name=* state=latest
+  ignore_errors: yes
+
+- name: install the 'Development tools' package group
+  yum: name="@Development tools" state=present
+
+- name: Install required system packages
+  yum: name={{ item }} state={{ yum_package_state }}
+  with_items:
+    - ant
+    - cmake
+    - curl
+    - gcc-c++
+    - gcc
+    - gcc-gfortran
+    - git
+    - libffi-devel
+    - lapack-devel
+    - ncurses-devel
+    - openblas-devel
+    - pam-devel
+    - libpqxx-devel
+    - sparsehash-devel
+    - make
+    - mercurial
+#   - nginx-extras
+    - openssh-server
+    - patch
+    - postgresql-server
+    - postgresql-devel
+    - postgresql
+    - postgresql-plpython
+    - python-boto
+    - python-devel
+    - python-prettytable
+    - python-psycopg2
+    - python-virtualenv
+    - python-pip
+    - rsync
+#   - slurm-drmaa-dev
+    - supervisor
+    - swig
+    - sysstat
+    - unzip
+    - wget
+    - zlib-devel
+  when: ((ansible_distribution_major_version == "6") or (ansible_distribution_major_version == "7"))
+
+
+- name: Install packages for system packages maintenance
+  yum: name={{ item }} state={{ yum_package_state }}
+  with_items: 
+    - atop
+#   - bioperl       
+    - ipython
+    - iotop
+    - htop
+    - iftop
+    - nmon
+    - vim 
+  when: install_maintainance_packages and ((ansible_distribution_major_version == "6") or (ansible_distribution_major_version == "7"))
+
+- name: Install packages for system packages maintenance (centos7)
+  yum:  name={{ item }} state={{ yum_package_state }}
+  with_items:
+    - axel
+  when:  install_maintainance_packages and (ansible_distribution_major_version == "7") 
