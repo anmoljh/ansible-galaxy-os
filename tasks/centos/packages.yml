@@ -66,7 +66,7 @@
     - iotop
     - htop
     - iftop
-    - nmon
+#   - nmon
     - vim 
   when: install_maintainance_packages and ((ansible_distribution_major_version == "6") or (ansible_distribution_major_version == "7"))
 
