@@ -75,3 +75,8 @@
   with_items:
     - axel
   when:  install_maintainance_packages and (ansible_distribution_major_version == "7") 
+
+- name: Update the virutalenv using pip
+  pip:  name={{ item }} state=latest
+  with_items:
+    - virtualenv
